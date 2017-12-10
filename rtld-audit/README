@@ -1,0 +1,19 @@
+
+=== HowTO run Application with rtld-audit'ing ===
+= Approach #1
+1) LD_AUDIT=<full path to audit lib> <application> , like:
+$ LD_AUDIT=./audit.so ./app
+
+otherwise:
+$ LD_AUDIT=audit.so ./app 
+ERROR: ld.so: object 'audit.so' cannot be loaded as audit interface: cannot open shared object file; ignored.
+APP: Going to call greeting() from libfoo.so
+libfoo: hello world
+
+= Approach #2
+In order not to specify environment variable LD_AUDIT when launchin the app,
+I tried to add the following line into Makefile:
+   APP_LDFLAGS := -Wl,--audit $(DIST_AUDIT) 
+This does not help
+
+
