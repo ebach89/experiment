@@ -69,7 +69,7 @@ uintptr_t la_symbind32(Elf32_Sym *sym, unsigned int ndx,
     printf(PROG_TAG "la_symbind32(): symname = %s; sym->st_value = %p\n"
            "        ndx = %d; flags = 0x%x"
            "; refcook = %p; defcook = %p\n",
-            symname, (void *)sym->st_value,
+            symname, (void *)(uintptr_t)sym->st_value,
             ndx, *flags,
             refcook, defcook);
 
@@ -80,5 +80,6 @@ uintptr_t la_symbind32(Elf32_Sym *sym, unsigned int ndx,
     if (!strcmp(symname, "to_be_hooked")) {
         return (uintptr_t)hook_for_to_be_hooked;
     }
+    return sym->st_value;
 }
 
