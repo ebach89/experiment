@@ -80,7 +80,7 @@ APP_LDFLAGS := -Wl,--audit $(DIST_AUDIT)
 # don't need, because libraries are specified in prereq, so
 # -lname will be added to recipe automatically
 #  see: https://www.gnu.org/software/make/manual/make.html#Libraries_002fSearch
-APP_LIBS := 
+APP_LIBS :=
 
 APP_OBJS := $(APP_SRC:.c=.o)
 
@@ -88,7 +88,7 @@ $(DIST_APP): \
   $(APP_OBJS) \
   $(DIST_LIB) \
   $(DIST_AUDIT)
-	$(CC) $(APP_CFLAGS) -o $@ $^ $(APP_LDFLAGS) $(APP_LIBS) 
+	$(CC) $(APP_CFLAGS) -o $@ $^ $(APP_LDFLAGS) $(APP_LIBS)
 
 $(APP_OBJS): \
   $(APP_SRC)
