@@ -62,24 +62,28 @@ unsigned int la_objopen(struct link_map *map, Lmid_t lmid, uintptr_t *cookie)
     return flags;
 }
 
+#define __la_symbind_XXX        __la_symbind_32
+#define ElfXXX_Sym              Elf32_Sym
+#include "rtld_audit_common.c"
+#undef __la_symbind_XXX
+#undef ElfXXX_Sym
+
+#define  __la_symbind_XXX       __la_symbind_64
+#define ElfXXX_Sym              Elf64_Sym
+#include "rtld_audit_common.c"
+#undef __la_symbind_XXX
+#undef ElfXXX_Sym
+
 uintptr_t la_symbind32(Elf32_Sym *sym, unsigned int ndx,
                        uintptr_t *refcook, uintptr_t *defcook,
                        unsigned int *flags, const char *symname)
 {
-    printf(PROG_TAG "la_symbind32(): symname = %s; sym->st_value = %p\n"
-           "        ndx = %d; flags = 0x%x"
-           "; refcook = %p; defcook = %p\n",
-            symname, (void *)(uintptr_t)sym->st_value,
-            ndx, *flags,
-            refcook, defcook);
-
-    if (!strcmp(symname, STRFY(greeting))) {
-        greeting();
-        return sym->st_value;
-    }
-    if (!strcmp(symname, "to_be_hooked")) {
-        return (uintptr_t)hook_for_to_be_hooked;
-    }
-    return sym->st_value;
+    return __la_symbind_32(sym, ndx, refcook, defcook, flags, symname);
 }
 
+uintptr_t la_symbind64(Elf64_Sym *sym, unsigned int ndx,
+                       uintptr_t *refcook, uintptr_t *defcook,
+                       unsigned int *flags, const char *symname)
+{
+    return __la_symbind_64(sym, ndx, refcook, defcook, flags, symname);
+}
