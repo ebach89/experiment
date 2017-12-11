@@ -46,8 +46,16 @@ LIB_CFLAGS := \
 LIB_LDFLAGS := \
 	$(LIBS_COMMON_LDFLAGS)
 
-$(DIST_LIB): $(subst .c,.o,$(LIB_SRC))
+LIB_OBJS := $(LIB_SRC:.c=.o)
+
+$(DIST_LIB): \
+  $(LIB_OBJS)
 	$(CC) $(LIB_CFLAGS) $(LIB_LDFLAGS) $^ -o $@
+
+$(LIB_OBJS): \
+  $(LIB_SRC)
+	$(CC) $(LIB_CFLAGS) -c $< -o $@
+
 
 ###########################
 # Libaudit
@@ -63,8 +71,15 @@ LIBAUDIT_CFLAGS := \
 LIBAUDIT_LDFLAGS := \
 	$(LIBS_COMMON_LDFLAGS)
 
-$(DIST_AUDIT): $(subst .c,.o,$(LIBAUDIT_SRC))
+LIBAUDIT_OBJS := $(LIBAUDIT_SRC:.c=.o)
+
+$(DIST_AUDIT): \
+  $(LIBAUDIT_OBJS)
 	$(CC) $(LIBAUDIT_CFLAGS) $(LIBAUDIT_LDFLAGS) $^ -o $@
+
+$(LIBAUDIT_OBJS): \
+  $(LIBAUDIT_SRC)
+	$(CC) $(LIBAUDIT_CFLAGS) -c $< -o $@
 
 #########################
 # APP
