@@ -13,7 +13,7 @@
 #define PROG_TAG    "AUDIT: "
 
 const char *audited_libs[] = {
-    ".", /* It seems, it means Application. without registering it at la_objopen() 
+    ".", /* It seems, it means Application. without registering it at la_objopen()
           * the auditing notifications for bindings into the foo.so does not work */
     "foo.so",
     NULL
@@ -79,6 +79,6 @@ uintptr_t la_symbind32(Elf32_Sym *sym, unsigned int ndx,
     }
     if (!strcmp(symname, "to_be_hooked")) {
         return (uintptr_t)hook_for_to_be_hooked;
-    } 
+    }
 }
 
