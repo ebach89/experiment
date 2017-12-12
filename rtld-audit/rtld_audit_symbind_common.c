@@ -22,4 +22,3 @@ static uintptr_t __la_symbind_XXX(ElfXXX_Sym *sym,
     }
     return sym->st_value;
 }
-

@@ -9,6 +9,7 @@
 #include <libgen.h>
 #include <string.h>
 
+#define _unused_         __attribute__((unused))
 
 #define PROG_TAG    "AUDIT: "
 
@@ -64,13 +65,13 @@ unsigned int la_objopen(struct link_map *map, Lmid_t lmid, uintptr_t *cookie)
 
 #define __la_symbind_XXX        __la_symbind_32
 #define ElfXXX_Sym              Elf32_Sym
-#include "rtld_audit_common.c"
+#include "rtld_audit_symbind_common.c"
 #undef __la_symbind_XXX
 #undef ElfXXX_Sym
 
 #define  __la_symbind_XXX       __la_symbind_64
 #define ElfXXX_Sym              Elf64_Sym
-#include "rtld_audit_common.c"
+#include "rtld_audit_symbind_common.c"
 #undef __la_symbind_XXX
 #undef ElfXXX_Sym
 
@@ -87,3 +88,111 @@ uintptr_t la_symbind64(Elf64_Sym *sym, unsigned int ndx,
 {
     return __la_symbind_64(sym, ndx, refcook, defcook, flags, symname);
 }
+
+/* from bits/link.h */
+#ifdef __x86_64__
+
+#define __la_XXX_gnu_pltenter_impl      __la_x86_64_gnu_pltenter
+#define ElfXXX_Addr                     Elf64_Addr
+#define ElfXXX_Sym                      Elf64_Sym
+#define La_XXX_regs                     La_x86_64_regs
+#include "rtld_audit_plt_common.c"
+#undef __la_XXX_gnu_pltenter_impl
+#undef ElfXXX_Addr
+#undef ElfXXX_Sym
+#undef La_XXX_regs
+
+Elf64_Addr la_x86_64_gnu_pltenter(Elf64_Sym *sym,
+                                  unsigned int ndx,
+                                  uintptr_t *refcook,
+                                  uintptr_t *defcook,
+                                  La_x86_64_regs *regs,
+                                  unsigned int *flags,
+                                  const char *symname,
+                                  long int *framesizep)
+{
+    return __la_x86_64_gnu_pltenter(sym, ndx, refcook, defcook, regs, flags, symname, framesizep);
+}
+
+unsigned int la_x86_64_gnu_pltexit(Elf64_Sym *sym,
+                                   unsigned int ndx,
+                                   uintptr_t *refcook,
+                                   uintptr_t *defcook,
+                                   const La_x86_64_regs *inregs,
+                                   La_x86_64_retval *outregs,
+                                   const char *symname)
+{
+    /* stub */
+    (void)sym;
+    (void)ndx;
+    (void)refcook;
+    (void)defcook;
+    (void)inregs;
+    (void)outregs;
+    (void)symname;
+
+    return 0;
+}
+
+#define __la_XXX_gnu_pltenter_impl      __la_x32_gnu_pltenter
+#define ElfXXX_Addr                     Elf32_Addr
+#define ElfXXX_Sym                      Elf32_Sym
+#define La_XXX_regs                     La_x32_regs
+#include "rtld_audit_plt_common.c"
+#undef __la_XXX_gnu_pltenter_impl
+#undef ElfXXX_Addr
+#undef ElfXXX_Sym
+#undef La_XXX_regs
+
+Elf32_Addr la_x32_gnu_pltenter(Elf32_Sym *sym,
+                               unsigned int ndx,
+                               uintptr_t *refcook,
+                               uintptr_t *defcook,
+                               La_x32_regs *regs,
+                               unsigned int *flags,
+                               const char *symname,
+                               long int *framesizep)
+{
+    return __la_x32_gnu_pltenter(sym, ndx, refcook, defcook, regs, flags, symname, framesizep);
+}
+
+unsigned int la_x32_gnu_pltexit(Elf32_Sym *sym,
+                                unsigned int ndx,
+                                uintptr_t *refcook,
+                                uintptr_t *defcook,
+                                const La_x32_regs *inregs,
+                                La_x32_retval *outregs,
+                                const char *symname)
+{
+    /* stub */
+    (void)sym;
+    (void)ndx;
+    (void)refcook;
+    (void)defcook;
+    (void)inregs;
+    (void)outregs;
+    (void)symname;
+
+    return 0;
+}
+#else /* !__x86_64__ */
+
+Elf32_Addr la_i86_gnu_pltenter(Elf32_Sym *sym,
+                               unsigned int ndx,
+                               uintptr_t *refcook,
+                               uintptr_t *defcook,
+                               La_i86_regs *regs,
+                               unsigned int *flags,
+                               const char *symname,
+                               long int *framesizep);
+
+
+unsigned int la_i86_gnu_pltexit(Elf32_Sym *sym,
+                                unsigned int ndx,
+                                uintptr_t *refcook,
+                                uintptr_t *defcook,
+                                const La_i86_regs *inregs,
+                                La_i86_retval *outregs,
+                                const char *symname);
+
+#endif /* __x86_64__ */
