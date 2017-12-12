@@ -10,6 +10,8 @@ static ElfXXX_Addr __la_XXX_gnu_pltenter_impl(ElfXXX_Sym *sym _unused_,
     printf(PROG_TAG "%s(): Enter PLT before call symname:%s() (sym->st_value:%p)\n",
            __func__, symname, (void *)(uintptr_t)sym->st_value);
 
+    /* without properly set of framesizep, the pltexit() will not be called */
+    *framesizep = 256;
     return sym->st_value;
 }
 
