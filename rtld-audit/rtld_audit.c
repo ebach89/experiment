@@ -93,14 +93,18 @@ uintptr_t la_symbind64(Elf64_Sym *sym, unsigned int ndx,
 #ifdef __x86_64__
 
 #define __la_XXX_gnu_pltenter_impl      __la_x86_64_gnu_pltenter
+#define __la_XXX_gnu_pltexit_impl       __la_x86_64_gnu_pltexit
 #define ElfXXX_Addr                     Elf64_Addr
 #define ElfXXX_Sym                      Elf64_Sym
 #define La_XXX_regs                     La_x86_64_regs
+#define La_XXX_retval                   La_x86_64_retval
 #include "rtld_audit_plt_common.c"
 #undef __la_XXX_gnu_pltenter_impl
+#undef __la_XXX_gnu_pltexit_impl
 #undef ElfXXX_Addr
 #undef ElfXXX_Sym
 #undef La_XXX_regs
+#undef La_XXX_retval
 
 Elf64_Addr la_x86_64_gnu_pltenter(Elf64_Sym *sym,
                                   unsigned int ndx,
@@ -122,27 +126,22 @@ unsigned int la_x86_64_gnu_pltexit(Elf64_Sym *sym,
                                    La_x86_64_retval *outregs,
                                    const char *symname)
 {
-    /* stub */
-    (void)sym;
-    (void)ndx;
-    (void)refcook;
-    (void)defcook;
-    (void)inregs;
-    (void)outregs;
-    (void)symname;
-
-    return 0;
+    return __la_x86_64_gnu_pltexit(sym, ndx, refcook, defcook, inregs, outregs, symname);
 }
 
 #define __la_XXX_gnu_pltenter_impl      __la_x32_gnu_pltenter
+#define __la_XXX_gnu_pltexit_impl       __la_x32_gnu_pltexit
 #define ElfXXX_Addr                     Elf32_Addr
 #define ElfXXX_Sym                      Elf32_Sym
 #define La_XXX_regs                     La_x32_regs
+#define La_XXX_retval                   La_x32_retval
 #include "rtld_audit_plt_common.c"
 #undef __la_XXX_gnu_pltenter_impl
+#undef __la_XXX_gnu_pltexit_impl
 #undef ElfXXX_Addr
 #undef ElfXXX_Sym
 #undef La_XXX_regs
+#undef La_XXX_retval
 
 Elf32_Addr la_x32_gnu_pltenter(Elf32_Sym *sym,
                                unsigned int ndx,
@@ -164,16 +163,7 @@ unsigned int la_x32_gnu_pltexit(Elf32_Sym *sym,
                                 La_x32_retval *outregs,
                                 const char *symname)
 {
-    /* stub */
-    (void)sym;
-    (void)ndx;
-    (void)refcook;
-    (void)defcook;
-    (void)inregs;
-    (void)outregs;
-    (void)symname;
-
-    return 0;
+    return __la_x32_gnu_pltexit(sym, ndx, refcook, defcook, inregs, outregs, symname);
 }
 #else /* !__x86_64__ */
 

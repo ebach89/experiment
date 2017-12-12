@@ -18,6 +18,10 @@ static uintptr_t __la_symbind_XXX(ElfXXX_Sym *sym,
         return sym->st_value;
     }
     if (!strcmp(symname, "to_be_hooked")) {
+        printf(PROG_TAG "%s(): Replace %s() (%p) by %s() (%p)\n",
+               __func__, symname, (void *)(uintptr_t)sym->st_value,
+               STRFY(hook_for_to_be_hooked), hook_for_to_be_hooked);
+
         return (uintptr_t)hook_for_to_be_hooked;
     }
     return sym->st_value;
